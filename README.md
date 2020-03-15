@@ -1,3 +1,5 @@
+<p align="center"><a href="https://angular.io/" target="_blank" rel="noopener noreferrer"><img width="150" src="https://angular.io/assets/images/logos/angular/angular.svg" alt="Angular logo"></a></p>
+
 # Ngcalculator
 
 An Angular app that show a calculator to interact with the mouse and keyboard. The objetive of this app is to use the less code amount posible and training basic concepts of angular
