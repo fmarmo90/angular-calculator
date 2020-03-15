@@ -1,5 +1,5 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { ThrowStmt } from '@angular/compiler';
+import { Component, OnInit } from '@angular/core';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-calculator',
@@ -13,11 +13,12 @@ export class CalculatorComponent implements OnInit {
   private firstNumber = '';
   private operation = '';
 
-  constructor() { }
+  listenForKey = fromEvent(document, 'keydown');
 
-  @HostListener('document:keydown', ['$event'])
-  handleKeyEvent(event: KeyboardEvent) {
-    this.validateInput(event.key);
+  constructor() { 
+    this.listenForKey.subscribe((event: KeyboardEvent) => {
+      this.validateInput(event.key)
+    });
   }
 
   ngOnInit(): void {
