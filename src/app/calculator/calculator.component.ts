@@ -15,9 +15,9 @@ export class CalculatorComponent implements OnInit {
 
   listenForKey = fromEvent(document, 'keydown');
 
-  constructor() { 
+  constructor() {
     this.listenForKey.subscribe((event: KeyboardEvent) => {
-      this.validateInput(event.key)
+      this.validateInput(event.key);
     });
   }
 
@@ -52,16 +52,16 @@ export class CalculatorComponent implements OnInit {
         switch (value) {
           case 'Delete':
             this.clear();
-          break;
+            break;
           case 'Enter':
             this.calculate();
-          break;
+            break;
           default:
             if (this.elements.includes(value)) {
               if (this.operation !== '') {
                 this.calculate();
               }
-      
+
               this.operation = value;
               this.current += this.showOperationElement(value);
               this.comma = false;
@@ -110,7 +110,7 @@ export class CalculatorComponent implements OnInit {
       throw new Error(`There is no operation to do`);
     }
 
-    let numbers = this.cleanCharacters(this.current).split(this.operation)
+    const numbers = this.cleanCharacters(this.current).split(this.operation);
 
     if (numbers.length < 2)  {
       throw new Error(`Second number is empty`);
@@ -125,7 +125,7 @@ export class CalculatorComponent implements OnInit {
 
       return String(oper).replace('.', ',');
     `)();
-    
+
     this.operation = '';
   }
 
