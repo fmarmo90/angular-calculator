@@ -28,16 +28,16 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
-      if (value === 'Delete' ) {
+      if (value === 'Delete') {
         this.clear();
         return;
       }
-  
+
       if (value === 'Enter') {
         this.calculate();
         return;
       }
-  
+
       if (!this.elements.includes(value)) {
         return;
       }
