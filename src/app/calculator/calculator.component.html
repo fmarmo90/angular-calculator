@@ -1,0 +1,13 @@
+<div class="calculator-container">
+    <div class="calculator">
+        <div class="calculator-screen" [innerHTML]="current"></div>
+
+        <div class="calculator-keys">
+            <button *ngFor="let element of elements" type="button" [ngClass]="{'operator': validateNumber(element)}" value="{{element}}" [innerHTML]="showOperationElement(element)" (click)="validateInput($event.target.value)"></button>
+
+            <button type="button" class="all-clear" value="all-clear" (click)="clear()">AC</button>
+
+            <button type="button" class="equal-sign" value="=" (click)="this.calculate()">=</button>
+        </div>
+    </div>
+</div>
