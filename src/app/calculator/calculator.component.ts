@@ -15,11 +15,15 @@ export class CalculatorComponent implements OnInit {
 
   constructor() { }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   handleKeyEvent(event: KeyboardEvent) {
-    if (event.keyCode == 13) {
-      this.calculate();
+    if (event.keyCode === 46 ) {
+      this.clear();
+      return;
+    }
 
+    if (event.keyCode === 13) {
+      this.calculate();
       return;
     }
 
