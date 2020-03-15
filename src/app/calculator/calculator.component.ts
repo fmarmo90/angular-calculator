@@ -10,7 +10,6 @@ export class CalculatorComponent implements OnInit {
   public current = '0';
   public elements = ['+', '-', '*', '/', '7', '8', '9', '4', '5', '6', '1', '2', '3', '0', ','];
 
-  private firstNumber = '';
   private operation = '';
   private comma = false;
 
@@ -63,7 +62,6 @@ export class CalculatorComponent implements OnInit {
                 this.calculate();
               }
       
-              this.firstNumber = this.cleanCharacters(this.current);
               this.operation = value;
               this.current += this.showOperationElement(value);
               this.comma = false;
@@ -81,7 +79,6 @@ export class CalculatorComponent implements OnInit {
   clear(): void {
     this.current = '0';
     this.operation = '';
-    this.firstNumber = '';
   }
 
   /**
@@ -113,14 +110,14 @@ export class CalculatorComponent implements OnInit {
       throw new Error(`There is no operation to do`);
     }
 
-    let secondNumber = this.cleanCharacters(this.current.split(this.operation).pop())
+    let numbers = this.cleanCharacters(this.current).split(this.operation)
 
-    if (secondNumber === '')  {
+    if (numbers.length < 2)  {
       throw new Error(`Second number is empty`);
     }
 
     this.current = new Function(`
-      let oper = ${this.firstNumber} ${this.operation} ${secondNumber};
+      let oper = ${numbers[0]} ${this.operation} ${numbers[1]};
 
       if (String(oper).includes('.')) {
         oper = oper.toFixed(2);
@@ -142,6 +139,6 @@ export class CalculatorComponent implements OnInit {
 
     return value.replace('&times;', '*')
                 .replace('&divide;', '/')
-                .replace(',', '.');
+                .replace(/,/g, '.');
   }
 }
