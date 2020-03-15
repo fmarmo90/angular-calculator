@@ -12,6 +12,7 @@ export class CalculatorComponent implements OnInit {
 
   private firstNumber = '';
   private operation = '';
+  private comma = false;
 
   listenForKey = fromEvent(document, 'keydown');
 
@@ -29,15 +30,16 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
-      if (this.cleanCharacters(this.current).length > 10) {
+      /*if (this.cleanCharacters(this.current).length > 10) {
         throw new Error(`Max number exceded`);
-      }
+      }*/
 
       // Dot
       if (value === ',' ||
-          value == '.') {
-        if (!this.current.includes(',')) {
+          value === '.') {
+        if (!this.comma) {
           this.current += ',';
+          this.comma = true;
         }
       // Numbers
       } else if (!this.validateNumber(value)) {
@@ -48,27 +50,25 @@ export class CalculatorComponent implements OnInit {
         }
       // Operations or special keys
       } else {
-        if (value === 'Delete') {
-          this.clear();
-          return;
+        switch (value) {
+          case 'Delete':
+            this.clear();
+          break;
+          case 'Enter':
+            this.calculate();
+          break;
+          default:
+            if (this.elements.includes(value)) {
+              if (this.operation !== '') {
+                this.calculate();
+              }
+      
+              this.firstNumber = this.cleanCharacters(this.current);
+              this.operation = value;
+              this.current += this.showOperationElement(value);
+              this.comma = false;
+            }
         }
-  
-        if (value === 'Enter') {
-          this.calculate();
-          return;
-        }
-
-        if (!this.elements.includes(value)) {
-          return;
-        }
-
-        if (this.operation !== '') {
-          this.calculate();
-        }
-
-        this.firstNumber = this.current;
-        this.operation = value;
-        this.current += this.showOperationElement(value);
       }
     } catch (e) {
       console.error(e);
@@ -88,15 +88,14 @@ export class CalculatorComponent implements OnInit {
    * Function to replace javascript operations to html entities
    */
   showOperationElement(operation): string {
-    if (operation === '*') {
-      return '&times;';
+    switch (operation) {
+      case '*':
+        return '&times;';
+      case '/':
+        return '&divide;';
+      default:
+        return operation;
     }
-
-    if (operation === '/') {
-      return '&divide;';
-    }
-
-    return operation;
   }
 
   /**
@@ -114,14 +113,22 @@ export class CalculatorComponent implements OnInit {
       throw new Error(`There is no operation to do`);
     }
 
-    const secondNumber = this.cleanCharacters(this.current)
-                            .replace(new RegExp(this.firstNumber + '\\' + this.operation, 'g'), '');
+    let secondNumber = this.cleanCharacters(this.current.split(this.operation).pop())
 
     if (secondNumber === '')  {
       throw new Error(`Second number is empty`);
     }
 
-    this.current = new Function(`return String(${this.firstNumber.replace(',','.')} ${this.operation} ${secondNumber.replace(',','.')})`)();
+    this.current = new Function(`
+      let oper = ${this.firstNumber} ${this.operation} ${secondNumber};
+
+      if (String(oper).includes('.')) {
+        oper = oper.toFixed(2);
+      }
+
+      return String(oper).replace('.', ',');
+    `)();
+    
     this.operation = '';
   }
 
@@ -134,6 +141,7 @@ export class CalculatorComponent implements OnInit {
     }
 
     return value.replace('&times;', '*')
-                .replace('&divide;', '/');
+                .replace('&divide;', '/')
+                .replace(',', '.');
   }
 }
