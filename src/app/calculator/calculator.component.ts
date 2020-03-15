@@ -116,6 +116,11 @@ export class CalculatorComponent implements OnInit {
       throw new Error(`Second number is empty`);
     }
 
+    if (numbers[1] === '' ||
+        typeof numbers[1] === 'undefined') {
+      throw new Error(`Second number is empty`);
+    }
+    
     this.current = new Function(`
       let oper = ${numbers[0]} ${this.operation} ${numbers[1]};
 
