@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ThrowStmt } from '@angular/compiler';
 
 @Component({
@@ -15,6 +15,21 @@ export class CalculatorComponent implements OnInit {
 
   constructor() { }
 
+  @HostListener('document:keypress', ['$event'])
+  handleKeyEvent(event: KeyboardEvent) {
+    if (event.keyCode == 13) {
+      this.calculate();
+
+      return;
+    }
+
+    if (!this.elements.includes(event.key)) {
+      return;
+    }
+
+    this.validateInput(event.key)
+  }
+  
   ngOnInit(): void {
   }
 
