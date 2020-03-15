@@ -17,23 +17,9 @@ export class CalculatorComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event'])
   handleKeyEvent(event: KeyboardEvent) {
-    if (event.keyCode === 46 ) {
-      this.clear();
-      return;
-    }
-
-    if (event.keyCode === 13) {
-      this.calculate();
-      return;
-    }
-
-    if (!this.elements.includes(event.key)) {
-      return;
-    }
-
-    this.validateInput(event.key)
+    this.validateInput(event.key);
   }
-  
+
   ngOnInit(): void {
   }
 
@@ -42,6 +28,20 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
+      if (value === 'Delete' ) {
+        this.clear();
+        return;
+      }
+  
+      if (value === 'Enter') {
+        this.calculate();
+        return;
+      }
+  
+      if (!this.elements.includes(value)) {
+        return;
+      }
+
       if (this.cleanCharacters(this.current).length > 10) {
         throw new Error(`Max number exceded`);
       }
