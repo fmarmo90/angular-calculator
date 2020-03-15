@@ -8,7 +8,7 @@ import { fromEvent } from 'rxjs';
 })
 export class CalculatorComponent implements OnInit {
   public current = '0';
-  public elements = ['+', '-', '*', '/', '7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.'];
+  public elements = ['+', '-', '*', '/', '7', '8', '9', '4', '5', '6', '1', '2', '3', '0', ','];
 
   private firstNumber = '';
   private operation = '';
@@ -29,28 +29,15 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
-      if (value === 'Delete') {
-        this.clear();
-        return;
-      }
-
-      if (value === 'Enter') {
-        this.calculate();
-        return;
-      }
-
-      if (!this.elements.includes(value)) {
-        return;
-      }
-
       if (this.cleanCharacters(this.current).length > 10) {
         throw new Error(`Max number exceded`);
       }
 
       // Dot
-      if (value === '.') {
-        if (!this.current.includes('.')) {
-          this.current += value;
+      if (value === ',' ||
+          value == '.') {
+        if (!this.current.includes(',')) {
+          this.current += ',';
         }
       // Numbers
       } else if (!this.validateNumber(value)) {
@@ -59,8 +46,22 @@ export class CalculatorComponent implements OnInit {
         } else {
           this.current += value;
         }
-      // Operations
+      // Operations or special keys
       } else {
+        if (value === 'Delete') {
+          this.clear();
+          return;
+        }
+  
+        if (value === 'Enter') {
+          this.calculate();
+          return;
+        }
+
+        if (!this.elements.includes(value)) {
+          return;
+        }
+
         if (this.operation !== '') {
           this.calculate();
         }
@@ -120,7 +121,7 @@ export class CalculatorComponent implements OnInit {
       throw new Error(`Second number is empty`);
     }
 
-    this.current = new Function(`return String(${this.firstNumber} ${this.operation} ${secondNumber})`)();
+    this.current = new Function(`return String(${this.firstNumber.replace(',','.')} ${this.operation} ${secondNumber.replace(',','.')})`)();
     this.operation = '';
   }
 
