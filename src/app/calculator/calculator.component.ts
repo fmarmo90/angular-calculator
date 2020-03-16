@@ -18,6 +18,7 @@ export class CalculatorComponent implements OnInit {
   constructor() {
     this.listenForKey.subscribe((event: KeyboardEvent) => {
       this.validateInput(event.key);
+      event.preventDefault();
     });
   }
 
@@ -50,6 +51,15 @@ export class CalculatorComponent implements OnInit {
       // Operations or special keys
       } else {
         switch (value) {
+          case 'Backspace':
+            let res = this.current.substring(0, this.current.length - 1);
+
+            if (res === '') {
+              res = '0';
+            }
+
+            this.current = res;
+            break;
           case 'Delete':
             this.clear();
             break;
@@ -120,7 +130,7 @@ export class CalculatorComponent implements OnInit {
         typeof numbers[1] === 'undefined') {
       throw new Error(`Second number is empty`);
     }
-    
+
     this.current = new Function(`
       let oper = ${numbers[0]} ${this.operation} ${numbers[1]};
 
