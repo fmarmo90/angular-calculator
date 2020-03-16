@@ -31,8 +31,10 @@
 }
 
 .calculator-screen {
-    margin: 10px 10px;
-    padding: 2px 10px;
+    margin: 10px;
+    padding: 0px 10px;
+    height: 60px;
+    line-height: 60px;
     width: calc(100% - 20px);
     font-size: 5rem;
     border: none;
@@ -40,7 +42,7 @@
     color: #fff;
     text-align: right;
     border-radius: 3px;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 button {

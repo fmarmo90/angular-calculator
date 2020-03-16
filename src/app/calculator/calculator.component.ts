@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-calculator',
@@ -15,12 +16,18 @@ export class CalculatorComponent implements OnInit {
 
   listenForKey = fromEvent(document, 'keydown');
 
-  constructor() {
+  constructor(public snackBar: MatSnackBar) {
     this.listenForKey.subscribe((event: KeyboardEvent) => {
       this.validateInput(event.key);
       event.preventDefault();
     });
   }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+       duration: 2000,
+    });
+ } 
 
   ngOnInit(): void {
   }
@@ -64,6 +71,7 @@ export class CalculatorComponent implements OnInit {
             this.clear();
             break;
           case 'Enter':
+          case '=':
             this.calculate();
             break;
           default:
@@ -79,7 +87,7 @@ export class CalculatorComponent implements OnInit {
         }
       }
     } catch (e) {
-      console.error(e);
+      this.openSnackBar(e.message, 'Close');
     }
   }
 
@@ -115,7 +123,7 @@ export class CalculatorComponent implements OnInit {
   /**
    * Function to calculate the operation inserted by the user
    */
-  public calculate(): void {
+  private calculate(): void {
     if (this.operation === '') {
       throw new Error(`There is no operation to do`);
     }
