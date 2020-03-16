@@ -2,7 +2,7 @@
 
 # Ngcalculator
 
-An Angular app that show a calculator to interact with the mouse and keyboard. The objetive of this app is to use the less code amount posible and training basic concepts of angular
+An Angular app that show a calculator to interact with the mouse and keyboard. The objective of this app is to use the less code amount posible and training basic concepts of angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.3.
 
