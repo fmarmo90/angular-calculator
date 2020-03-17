@@ -2,7 +2,10 @@
 
 # Ngcalculator
 <br>
-<p align="center"><a href="" target="_blank" rel="noopener noreferrer"><img width="300" src="https://raw.githubusercontent.com/fmarmo90/angular-calculator/dev/src/assets/wallpaper.JPG" alt="Angular logo"></a></p><br>
+<p align="center">
+  <a href="" target="_blank" rel="noopener noreferrer"><img width="300" src="https://raw.githubusercontent.com/fmarmo90/angular-calculator/dev/src/assets/wallpaper.JPG" alt="Angular logo"></a><br><br>
+  <a href="https://fmarmo90-angular-calculator.netlify.com/">Live Demo</a>
+</p><br>
 
 An Angular app that show a calculator to interact with the mouse and keyboard. The objective of this app is to use the less code amount posible and training basic concepts of angular
 
