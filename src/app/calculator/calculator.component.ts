@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-calculator',
@@ -15,11 +16,22 @@ export class CalculatorComponent implements OnInit {
 
   listenForKey = fromEvent(document, 'keydown');
 
-  constructor() {
+  constructor(public snackBar: MatSnackBar) {
     this.listenForKey.subscribe((event: KeyboardEvent) => {
       this.validateInput(event.key);
+
+      if (event.key != 'F12' &&
+          event.key != 'F5') {
+        event.preventDefault();
+      }
     });
   }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+       duration: 2000,
+    });
+ } 
 
   ngOnInit(): void {
   }
@@ -29,19 +41,19 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
-      /*if (this.cleanCharacters(this.current).length > 10) {
-        throw new Error(`Max number exceded`);
-      }*/
-
       // Dot
       if (value === ',' ||
           value === '.') {
         if (!this.comma) {
+          this.validateCalculationLenght();
+
           this.current += ',';
           this.comma = true;
         }
       // Numbers
       } else if (!this.validateNumber(value)) {
+        this.validateCalculationLenght();
+
         if (this.current === '0') {
           this.current = value;
         } else {
@@ -50,10 +62,20 @@ export class CalculatorComponent implements OnInit {
       // Operations or special keys
       } else {
         switch (value) {
+          case 'Backspace':
+            let res = this.current.substring(0, this.current.length - 1);
+
+            if (res === '') {
+              res = '0';
+            }
+
+            this.current = res;
+            break;
           case 'Delete':
             this.clear();
             break;
           case 'Enter':
+          case '=':
             this.calculate();
             break;
           default:
@@ -69,7 +91,7 @@ export class CalculatorComponent implements OnInit {
         }
       }
     } catch (e) {
-      console.error(e);
+      this.openSnackBar(e.message, 'Close');
     }
   }
 
@@ -81,6 +103,11 @@ export class CalculatorComponent implements OnInit {
     this.operation = '';
   }
 
+  private validateCalculationLenght() {
+    if (this.cleanCharacters(this.current).length > 10) {
+      throw new Error(`Max number exceded`);
+    }
+  }
   /**
    * Function to replace javascript operations to html entities
    */
@@ -105,7 +132,7 @@ export class CalculatorComponent implements OnInit {
   /**
    * Function to calculate the operation inserted by the user
    */
-  public calculate(): void {
+  private calculate(): void {
     if (this.operation === '') {
       throw new Error(`There is no operation to do`);
     }
@@ -120,7 +147,7 @@ export class CalculatorComponent implements OnInit {
         typeof numbers[1] === 'undefined') {
       throw new Error(`Second number is empty`);
     }
-    
+
     this.current = new Function(`
       let oper = ${numbers[0]} ${this.operation} ${numbers[1]};
 

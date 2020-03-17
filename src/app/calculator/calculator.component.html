@@ -7,7 +7,8 @@
 
             <button type="button" class="all-clear" value="all-clear" (click)="clear()">AC</button>
 
-            <button type="button" class="equal-sign" value="=" (click)="this.calculate()">=</button>
+            <button type="button" class="equal-sign" value="=" (click)="validateInput($event.target.value)">=</button>
         </div>
     </div>
+
 </div>
