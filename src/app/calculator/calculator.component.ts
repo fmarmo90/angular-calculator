@@ -19,7 +19,11 @@ export class CalculatorComponent implements OnInit {
   constructor(public snackBar: MatSnackBar) {
     this.listenForKey.subscribe((event: KeyboardEvent) => {
       this.validateInput(event.key);
-      event.preventDefault();
+
+      if (event.key != 'F12' &&
+          event.key != 'F5') {
+        event.preventDefault();
+      }
     });
   }
 
