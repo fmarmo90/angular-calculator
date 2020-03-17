@@ -41,19 +41,19 @@ export class CalculatorComponent implements OnInit {
    */
   validateInput(value: string): void {
     try {
-      /*if (this.cleanCharacters(this.current).length > 10) {
-        throw new Error(`Max number exceded`);
-      }*/
-
       // Dot
       if (value === ',' ||
           value === '.') {
         if (!this.comma) {
+          this.validateCalculationLenght();
+
           this.current += ',';
           this.comma = true;
         }
       // Numbers
       } else if (!this.validateNumber(value)) {
+        this.validateCalculationLenght();
+
         if (this.current === '0') {
           this.current = value;
         } else {
@@ -103,6 +103,11 @@ export class CalculatorComponent implements OnInit {
     this.operation = '';
   }
 
+  private validateCalculationLenght() {
+    if (this.cleanCharacters(this.current).length > 10) {
+      throw new Error(`Max number exceded`);
+    }
+  }
   /**
    * Function to replace javascript operations to html entities
    */
